@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "bash ./scripts/copilot-hook-adapter.sh pre ./scripts/gate-check.sh",
+        "powershell": "bash ./scripts/copilot-hook-adapter.sh pre ./scripts/gate-check.sh",
+        "timeoutSec": 15
+      },
+      {
+        "type": "command",
+        "bash": "bash ./scripts/copilot-hook-adapter.sh pre ./scripts/contract-check.sh",
+        "powershell": "bash ./scripts/copilot-hook-adapter.sh pre ./scripts/contract-check.sh",
+        "timeoutSec": 15
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "bash ./scripts/copilot-hook-adapter.sh post ./scripts/org-validate.sh",
+        "powershell": "bash ./scripts/copilot-hook-adapter.sh post ./scripts/org-validate.sh",
+        "timeoutSec": 10
+      },
+      {
+        "type": "command",
+        "bash": "bash ./scripts/copilot-hook-adapter.sh post ./scripts/memory-log-commit.sh",
+        "powershell": "bash ./scripts/copilot-hook-adapter.sh post ./scripts/memory-log-commit.sh",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}

@@ -55,7 +55,7 @@ None of these are required — record empty lists if the org has none; don't nag
 ## Step 5 — Generate artifacts
 Order matters; use the exact mechanics below.
 
-1. **`.harness/profile.yaml`** — render from `${CLAUDE_PLUGIN_ROOT}/../../templates/profile.yaml`
+1. **`.harness/profile.yaml`** — render from `../se-harness/templates/profile.yaml`
    with all interview answers. Never put secrets here.
 2. **`.env.harness`** — copy `templates/env.harness.example` **only if `.env.harness` doesn't
    already exist**; leave existing files untouched. Tell the user which vars to fill for the
@@ -78,8 +78,8 @@ Order matters; use the exact mechanics below.
    the profile; drop sections whose data is empty; **do not include the marker lines** — the
    splice script owns them). Write each rendered block to a temp file, then:
    ```
-   bash ${CLAUDE_PLUGIN_ROOT}/scripts/render-block.sh AGENTS.md <temp-agents-block>
-   bash ${CLAUDE_PLUGIN_ROOT}/scripts/render-block.sh CLAUDE.md <temp-claude-block>
+   bash tools/harness/render-block.sh AGENTS.md <temp-agents-block>
+   bash tools/harness/render-block.sh CLAUDE.md <temp-claude-block>
    ```
    This is the ONLY way to touch these files — never edit them directly, so hand-written
    content outside the markers survives.

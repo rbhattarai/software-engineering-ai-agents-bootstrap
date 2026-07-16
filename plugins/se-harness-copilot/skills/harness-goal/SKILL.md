@@ -1,7 +1,8 @@
 ---
+name: harness-goal
 description: Run the loop-engineering workflow for a user goal — grill, deep-dive, refine, story, implement, test, PR, deploy — with human gates at irreversible steps.
-argument-hint: <goal statement>
 ---
+
 
 # /harness-goal — the loop-engineering workflow
 
@@ -24,7 +25,7 @@ stop when testable — over-grilling erodes trust.
 
 ## 3. Refined requirement  ⛔ HITL GATE 1
 ```
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/new-requirement.sh "<one-line goal>"
+bash tools/harness/new-requirement.sh "<one-line goal>"
 ```
 Fill the created `REQ-NNN.md` (grill output + deep-dive impact; status stays `draft`).
 **Stop and present it.** Only the user flips status to `approved` — record `approved` verbatim
@@ -41,9 +42,9 @@ frontmatter. The story ID threads through branch names, commits, and the PR from
    before any code.
 2. Break the design into tasks; typical order — db first, then backend ∥ frontend in parallel:
    ```
-   bash ${CLAUDE_PLUGIN_ROOT}/scripts/worktree-task.sh create REQ-NNN db-schema
-   bash ${CLAUDE_PLUGIN_ROOT}/scripts/worktree-task.sh create REQ-NNN backend-api
-   bash ${CLAUDE_PLUGIN_ROOT}/scripts/worktree-task.sh create REQ-NNN frontend-ui
+   bash tools/harness/worktree-task.sh create REQ-NNN db-schema
+   bash tools/harness/worktree-task.sh create REQ-NNN backend-api
+   bash tools/harness/worktree-task.sh create REQ-NNN frontend-ui
    ```
 3. Delegate each task to its agent (**db-engineer**, **implementer-backend**,
    **implementer-frontend**) — each works only in its worktree, compose-first, tests included,
@@ -52,7 +53,7 @@ frontmatter. The story ID threads through branch names, commits, and the PR from
    then **integration-tester** on the merged result. `worktree-task.sh remove` each done task
    (it refuses on uncommitted work — that's deliberate).
 5. Automated gate (no human needed): full test suite green, lint clean, org-validate clean,
-   and `bash ${CLAUDE_PLUGIN_ROOT}/scripts/contract-check.sh --` clean — if a provided contract
+   and `bash tools/harness/contract-check.sh --` clean — if a provided contract
    changed, list the impacted consumer units in the REQ and create linked consumer tasks
    before proceeding. Red anything → back to the owning agent, not onward.
 

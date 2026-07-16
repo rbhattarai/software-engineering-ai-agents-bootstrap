@@ -1,9 +1,14 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "se-harness",
+  "displayName": "SE Harness",
   "version": "0.1.0",
   "description": "AI-agentic SDLC harness: goal loop with human-in-the-loop gates, budgeted context injection, org compose-first conventions, and requirement traceability.",
   "author": {
     "name": "Rohan Bhattarai",
     "email": "rohan.bhattarai.dev@gmail.com"
-  }
+  },
+  "repository": "https://github.com/rbhattarai/software-engineering-ai-agents-bootstrap",
+  "license": "MIT",
+  "keywords": ["sdlc", "agents", "harness", "bootstrap", "hitl", "memory", "playwright", "multi-repo"]
 }

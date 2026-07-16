@@ -1,11 +1,13 @@
 {
+  "description": "se-harness enforcement & memory: HITL gate + contract check (PreToolUse), org-rules validation + commit auto-logging (PostToolUse), budgeted context injection (UserPromptSubmit).",
   "hooks": {
     "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/inject-context.sh"
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/inject-context.sh\"",
+            "timeout": 15
           }
         ]
       }
@@ -16,7 +18,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/gate-check.sh"
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/gate-check.sh\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/contract-check.sh\"",
+            "timeout": 15
           }
         ]
       }
@@ -27,7 +35,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/org-validate.sh"
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/org-validate.sh\"",
+            "timeout": 10
           }
         ]
       },
@@ -36,7 +45,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/memory-log-commit.sh"
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/memory-log-commit.sh\"",
+            "timeout": 10
           }
         ]
       }

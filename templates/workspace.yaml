@@ -1,0 +1,34 @@
+# workspace.yaml — multi-unit product manifest (A6 topology model).
+# Mono-repo: lives at the repo root; units use `path:`.
+# Multi-repo: lives in a small dedicated meta-repo; units use `repo:`; each member repo's
+#   .harness/profile.yaml points here and /harness-sync pulls the shared: block.
+#
+# NOTE: the `contracts:` section is machine-read by scripts/contract-check.sh — keep its
+# exact shape (name / file / provider / consumers on their own lines).
+
+workspace:
+  name: ""
+  topology: mono-repo        # mono-repo | multi-repo
+  layout: domain             # layered | domain
+
+  shared:                    # inherited by every unit's generated AGENTS.md/CLAUDE.md
+    org: {}                  # same shape as profile.yaml org: — conventions, internal libs
+    mcp: []                  # MCP servers every unit should configure (e.g. [github, atlassian])
+    jira_project: ""
+
+  units:
+    - name: example-service
+      path: services/example        # mono-repo form (relative dir)
+      # repo: git@github.com:acme/example-service.git   # multi-repo form (instead of path)
+      stack: []
+
+  run:
+    compose: ""              # workspace-level docker-compose for local verify (goal-loop step 8)
+
+# Contract registry (multi-repo tier 2 — deterministic cross-unit impact, no service graph).
+# provider changes contract file → contract-check.sh flags every consumer.
+contracts:
+  - name: example-api
+    file: contracts/example-api.yaml
+    provider: example-service
+    consumers: []            # unit names that consume this contract

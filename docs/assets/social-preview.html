@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 640px; overflow: hidden; }
+  body {
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    background: #0d1117;
+    background-image:
+      radial-gradient(ellipse 900px 500px at 85% -10%, rgba(137, 87, 229, 0.22), transparent 60%),
+      radial-gradient(ellipse 800px 500px at 0% 110%, rgba(217, 119, 87, 0.16), transparent 60%);
+    color: #e6edf3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 96px;
+    position: relative;
+  }
+  .kicker {
+    font-family: Consolas, "Cascadia Code", monospace;
+    font-size: 22px;
+    color: #8b949e;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 92px;
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 22px;
+  }
+  h1 .accent { color: #d97757; }
+  .tagline {
+    font-size: 31px;
+    line-height: 1.4;
+    color: #c9d1d9;
+    max-width: 980px;
+    margin-bottom: 44px;
+  }
+  .tagline b { color: #ffffff; font-weight: 600; }
+  .chips { display: flex; gap: 16px; flex-wrap: wrap; }
+  .chip {
+    font-size: 22px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1.5px solid #30363d;
+    background: rgba(22, 27, 34, 0.85);
+    color: #e6edf3;
+  }
+  .chip.gate   { border-color: #d97757; color: #f0a48a; }
+  .chip.agents { border-color: #8957e5; color: #b699f0; }
+  .chip.dual   { border-color: #2ea44f; color: #6fd18a; }
+  .install {
+    position: absolute;
+    bottom: 44px;
+    left: 96px;
+    font-family: Consolas, "Cascadia Code", monospace;
+    font-size: 23px;
+    color: #8b949e;
+  }
+  .install .p { color: #6fd18a; }
+</style>
+</head>
+<body>
+  <div class="kicker">github.com/rbhattarai/se-harness</div>
+  <h1>se-<span class="accent">harness</span></h1>
+  <div class="tagline">
+    Bootstrap an AI-agentic SDLC around any project.<br>
+    <b>Agents do the work — hooks make sure they can't ship without you.</b>
+  </div>
+  <div class="chips">
+    <div class="chip gate">3 hook-enforced approval gates</div>
+    <div class="chip agents">11 SDLC agents</div>
+    <div class="chip dual">Claude Code + Copilot CLI</div>
+    <div class="chip">any stack · multi-repo · no telemetry</div>
+  </div>
+  <div class="install"><span class="p">/plugin</span> marketplace add rbhattarai/se-harness</div>
+</body>
+</html>

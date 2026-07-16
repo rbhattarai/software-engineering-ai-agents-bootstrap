@@ -87,7 +87,7 @@ followed by a rebuild, a `vX.Y.Z` tag, and a GitHub release.
 
 ## Reporting bugs and proposing features
 
-Open a [GitHub issue](https://github.com/rbhattarai/software-engineering-ai-agents-bootstrap/issues)
+Open a [GitHub issue](https://github.com/rbhattarai/se-harness/issues)
 with reproduction steps (for bugs: OS, Claude Code / Copilot CLI version, and the
 command or hook involved). For larger features — new agents, new ecosystem targets,
 changes to the goal-loop gates — please open an issue to discuss before investing in

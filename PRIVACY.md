@@ -2,7 +2,7 @@
 
 **Effective date:** July 16, 2026
 **Applies to:** the `se-harness` and `se-harness-copilot` plugins distributed from
-this repository (`software-engineering-ai-agents-bootstrap`).
+this repository (`se-harness`).
 
 ## Summary
 
@@ -40,4 +40,4 @@ history is publicly visible.
 ## Contact
 
 Questions: Rohan Bhattarai — rohan.bhattarai.dev@gmail.com, or open an issue at
-https://github.com/rbhattarai/software-engineering-ai-agents-bootstrap/issues
+https://github.com/rbhattarai/se-harness/issues

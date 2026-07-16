@@ -84,8 +84,8 @@ If your machine can reach public GitHub and plugin installs aren't restricted, t
 two-liner in Copilot CLI:
 
 ```bash
-copilot plugin marketplace add rbhattarai/software-engineering-ai-agents-bootstrap
-copilot plugin install se-harness-copilot@software-engineering-ai-agents-bootstrap
+copilot plugin marketplace add rbhattarai/se-harness
+copilot plugin install se-harness-copilot@se-harness
 ```
 
 Verify: `copilot plugin list` shows `se-harness-copilot`, and a new session can answer
@@ -96,7 +96,7 @@ Verify: `copilot plugin list` shows `se-harness-copilot`, and a new session can 
 Do **not** hand-copy an unreviewed zip from the public internet into firm infrastructure.
 Follow your firm's third-party/OSS intake process:
 
-1. The framework lives at public GitHub as `rbhattarai/software-engineering-ai-agents-bootstrap`
+1. The framework lives at public GitHub as `rbhattarai/se-harness`
    (it contains no company or product data — verify by reading it; it's small).
 2. Request your platform/security team to **import it into GitHub Enterprise as an internal
    repo**, e.g. `yourorg/se-harness` (GitHub's "Import repository", or fork if your enterprise
@@ -104,7 +104,7 @@ Follow your firm's third-party/OSS intake process:
 3. Then install from the internal copy:
    ```bash
    copilot plugin marketplace add yourorg/se-harness
-   copilot plugin install se-harness-copilot@software-engineering-ai-agents-bootstrap
+   copilot plugin install se-harness-copilot@se-harness
    ```
 4. From now on, everything references the **internal** copy.
 
@@ -115,16 +115,16 @@ If policy forces offline transfer, or `copilot plugin marketplace add` is blocke
 1. On the GitHub repo page: **Code → Download ZIP** (or grab a tagged release zip). Submit
    it through your code scanning/approval process.
 2. Unzip the reviewed contents somewhere stable, e.g.
-   `C:\tools\software-engineering-ai-agents-bootstrap` (or push them to an internal repo —
+   `C:\tools\se-harness` (or push them to an internal repo —
    better, because updates stay pullable).
 3. Copilot CLI installs plugins from a **local path** too:
    ```bash
-   copilot plugin install /c/tools/software-engineering-ai-agents-bootstrap/plugins/se-harness-copilot
+   copilot plugin install /c/tools/se-harness/plugins/se-harness-copilot
    ```
    Or register the unzipped folder as a local marketplace:
    ```bash
-   copilot plugin marketplace add /c/tools/software-engineering-ai-agents-bootstrap
-   copilot plugin install se-harness-copilot@software-engineering-ai-agents-bootstrap
+   copilot plugin marketplace add /c/tools/se-harness
+   copilot plugin install se-harness-copilot@se-harness
    ```
 4. Caveats of the zip route: you lose `git pull` updates — record the source commit SHA next
    to the unzipped copy; and plugin components are **cached**, so after replacing the folder
@@ -511,7 +511,7 @@ canonical location). Publishing therefore has two tiers:
 2. Commit, push to GitHub (public, or internal for enterprise), and tag a release
    (`git tag v0.1.0 && git push --tags`) so zip-route users get a stable snapshot.
 3. Anyone can now install with
-   `copilot plugin marketplace add <owner>/<repo>` → `copilot plugin install se-harness-copilot@software-engineering-ai-agents-bootstrap`.
+   `copilot plugin marketplace add <owner>/<repo>` → `copilot plugin install se-harness-copilot@se-harness`.
 4. **Enterprise-wide**: ask your GitHub admin to distribute it via
    [enterprise-managed plugins](https://github.blog/changelog/2026-05-06-enterprise-managed-plugins-in-github-copilot-cli-are-now-in-public-preview/) —
    auto-installed for every developer, hooks/MCP can be forced always-on for governance.
@@ -522,7 +522,7 @@ Every Copilot CLI ships with two marketplaces pre-registered: **`github/copilot-
 their repo** adding an entry to their `marketplace.json` that points at yours:
 ```json
 { "name": "se-harness-copilot",
-  "source": { "source": "github", "repo": "rbhattarai/software-engineering-ai-agents-bootstrap", "path": "plugins/se-harness-copilot" } }
+  "source": { "source": "github", "repo": "rbhattarai/se-harness", "path": "plugins/se-harness-copilot" } }
 ```
 Read the target repo's CONTRIBUTING.md first — each has its own review/quality bar. Once
 merged, users install with zero setup: `copilot plugin install se-harness-copilot`.

@@ -37,7 +37,7 @@ integration, access to the Atlassian MCP server.
 Inside any Claude Code session:
 
 ```
-/plugin marketplace add rbhattarai/software-engineering-ai-agents-bootstrap
+/plugin marketplace add rbhattarai/se-harness
 /plugin install se-harness
 ```
 
@@ -60,10 +60,10 @@ blocked:
 
 1. On the repo page: **Code → Download ZIP** (or a tagged release zip). Put it through your
    code review/scanning process.
-2. Unzip to a stable path, e.g. `C:\tools\software-engineering-ai-agents-bootstrap`.
+2. Unzip to a stable path, e.g. `C:\tools\se-harness`.
 3. Claude Code accepts a **local directory** as a marketplace:
    ```
-   /plugin marketplace add C:\tools\software-engineering-ai-agents-bootstrap
+   /plugin marketplace add C:\tools\se-harness
    /plugin install se-harness
    ```
 4. Caveats: no `git pull` updates — record the source commit SHA next to the copy; after
@@ -242,7 +242,7 @@ env is which) and `database-config` (object/domain layout, migration process).
 ### 5.1 Consuming an update
 
 ```
-/plugin marketplace update software-engineering-ai-agents-bootstrap
+/plugin marketplace update se-harness
 /plugin update se-harness
 ```
 
@@ -289,7 +289,7 @@ read natively by Claude Code *and* Copilot CLI; the build script mirrors it to
    run the build script, commit, push to GitHub, tag a release (`git tag v0.1.0 &&
    git push --tags`).
 2. That's publication. Anyone installs with
-   `/plugin marketplace add <owner>/software-engineering-ai-agents-bootstrap` →
+   `/plugin marketplace add <owner>/se-harness` →
    `/plugin install se-harness`. There is no central Anthropic submission/approval step — a
    public GitHub repo with a valid marketplace manifest *is* a live marketplace.
 3. **Enterprise-wide**: admins can pre-install it for every developer via managed settings
@@ -303,7 +303,7 @@ yours:
 
 ```json
 { "name": "se-harness",
-  "source": { "source": "github", "repo": "rbhattarai/software-engineering-ai-agents-bootstrap" },
+  "source": { "source": "github", "repo": "rbhattarai/se-harness" },
   "description": "Bootstrap an AI-agentic SDLC harness around any project" }
 ```
 

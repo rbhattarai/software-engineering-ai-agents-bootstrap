@@ -1,0 +1,14 @@
+{
+  "_note": "Rendered into the project's .mcp.json by /harness-bootstrap. Prefer official plugins (github, atlassian) which bundle their own MCP config — include entries here ONLY for servers not covered by an installed plugin. Secrets come from .env.harness via ${VAR} expansion, never inline.",
+  "mcpServers": {
+    "codebase-memory": {
+      "command": "codebase-memory-mcp",
+      "args": ["serve"],
+      "_note": "structural memory tier — swap for CodeGraph per the A7 bake-off outcome; remove if neither installed"
+    },
+    "atlassian": {
+      "url": "https://mcp.atlassian.com/v1/sse",
+      "_note": "remove if the atlassian plugin is installed (it bundles this)"
+    }
+  }
+}

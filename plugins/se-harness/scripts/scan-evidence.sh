@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# scan-evidence.sh — read-only brownfield evidence collector (Phase 2, v0).
+# Gathers raw signals into one bounded, sectioned report; the stack-detector skill
+# (LLM) reasons over this instead of wandering the repo. NEVER modifies anything.
+# usage: scan-evidence.sh [root-dir]   (default: .)
+
+set -u
+ROOT="${1:-.}"
+cd "$ROOT" || exit 1
+
+CAP=2000        # bytes per file excerpt
+LIST_CAP=25     # max entries per file list
+
+section() { printf '\n===== %s =====\n' "$1"; }
+show() { # show <label> <file>
+  [ -f "$2" ] || return 0
+  printf -- '--- %s ---\n' "$1"
+  head -c "$CAP" "$2"; printf '\n'
+}
+find_capped() { # find_capped <name-pattern...>
+  find . -type d \( -name node_modules -o -name .git -o -name dist -o -name build \
+    -o -name target -o -name .venv -o -name venv -o -name vendor -o -name bin -o -name obj \) -prune \
+    -o -type f \( "$@" \) -print 2>/dev/null | head -n "$LIST_CAP"
+}
+
+section "MANIFESTS (dependency files found)"
+find_capped -name package.json -o -name pyproject.toml -o -name requirements.txt \
+  -o -name go.mod -o -name pom.xml -o -name build.gradle -o -name build.gradle.kts \
+  -o -name "*.csproj" -o -name "*.sln" -o -name Gemfile -o -name composer.json -o -name Cargo.toml
+
+section "ROOT MANIFEST CONTENTS"
+for f in package.json pyproject.toml requirements.txt go.mod pom.xml build.gradle build.gradle.kts Gemfile composer.json Cargo.toml; do
+  show "$f" "$f"
+done
+for f in *.csproj; do [ -f "$f" ] && show "$f" "$f"; done
+
+section "WORKSPACE / TOPOLOGY MARKERS"
+for f in pnpm-workspace.yaml nx.json turbo.json lerna.json go.work WORKSPACE MODULE.bazel; do
+  [ -f "$f" ] && echo "FOUND: $f"
+done
+ls *.sln 2>/dev/null | sed 's/^/FOUND: /'
+grep -l "<modules>" pom.xml 2>/dev/null | sed 's/^/FOUND maven multi-module: /'
+
+section "PRIVATE REGISTRIES (internal-library signal)"
+for f in .npmrc .yarnrc .yarnrc.yml NuGet.config nuget.config pip.conf setup.cfg .pypirc; do
+  show "$f" "$f"
+done
+[ -f ~/.m2/settings.xml ] && echo "(user-level maven settings.xml exists — check for internal mirrors)"
+grep -rl --include="*.toml" --include="*.cfg" "index-url\|extra-index-url" . 2>/dev/null | head -5
+
+section "INTERNAL IMPORT SCOPES (top scoped/company-style imports)"
+# JS/TS scoped imports
+grep -rhoE "from ['\"]@[a-z0-9-]+/" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" . 2>/dev/null \
+  | sed -E "s/from ['\"](@[a-z0-9-]+)\/.*/\1/" | sort | uniq -c | sort -rn | head -10
+# Java/C# company-package imports
+grep -rhoE "^import (com|net|org|io)\.[a-z0-9]+\." --include="*.java" --include="*.kt" . 2>/dev/null \
+  | sort | uniq -c | sort -rn | head -10
+grep -rhoE "^using [A-Z][A-Za-z0-9]+\." --include="*.cs" . 2>/dev/null \
+  | sort | uniq -c | sort -rn | head -10
+
+section "LINT / FORMAT / CONVENTION CONFIGS"
+find_capped -name ".eslintrc*" -o -name ".prettierrc*" -o -name ".editorconfig" \
+  -o -name "ruff.toml" -o -name ".flake8" -o -name "checkstyle*.xml" -o -name ".golangci.yml" \
+  -o -name "stylecop*" -o -name ".rubocop.yml" -o -name "biome.json"
+show ".editorconfig" ".editorconfig"
+
+section "CI / DEVOPS"
+ls .github/workflows/ 2>/dev/null | head -n "$LIST_CAP"
+for f in .gitlab-ci.yml Jenkinsfile azure-pipelines.yml bitbucket-pipelines.yml .circleci/config.yml; do
+  [ -f "$f" ] && echo "FOUND: $f"
+done
+
+section "CONTAINERS / IaC / CLOUD"
+find_capped -name "Dockerfile*" -o -name "docker-compose*" -o -name "*.tf" \
+  -o -name "serverless.yml" -o -name "vercel.json" -o -name "app.yaml" -o -name "Procfile" \
+  -o -name "*.bicep" -o -name "cloudbuild.yaml" -o -name "template.yaml"
+for f in docker-compose.yml docker-compose.yaml compose.yml compose.yaml; do
+  show "$f" "$f"
+done
+
+section "DATA / MESSAGING HINTS (dependency names in manifests)"
+grep -hoE '"(pg|mysql2?|mongodb|mongoose|redis|ioredis|kafkajs|amqplib|@elastic/elasticsearch|cassandra-driver|mssql|oracledb|sqlite3?|prisma|typeorm|sequelize|knex)"' package.json 2>/dev/null | sort -u
+grep -hoE "(psycopg2?|pymysql|pymongo|redis|kafka-python|confluent-kafka|pika|elasticsearch|sqlalchemy|django|flask|fastapi)" requirements.txt pyproject.toml 2>/dev/null | sort -u
+grep -hoE "(spring-kafka|spring-boot-starter-data-[a-z]+|jedis|lettuce|mongodb-driver|postgresql|mysql-connector)" pom.xml build.gradle build.gradle.kts 2>/dev/null | sort -u
+
+section "END OF EVIDENCE"
+exit 0

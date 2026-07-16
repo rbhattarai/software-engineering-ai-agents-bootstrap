@@ -1,0 +1,78 @@
+{
+  "_note": "Recommender data: maps profile keys to installable components. Sources: official Claude marketplace (B9 inventory) unless 'marketplace' says otherwise. Honest gaps are recorded as 'none' with a note — the recommender must never invent a plugin name. Update this file as marketplaces evolve; CI should validate plugin names against the live marketplace list.",
+  "methodologies": {
+    "bmad": {
+      "kind": "plugin",
+      "marketplace": "PabloLION/bmad-plugin",
+      "plugin": "bmad",
+      "note": "BMAD v6 port: 9 agents, 26 workflows. BMAD core team's official installer in progress (bmad-code-org/BMAD-METHOD#746) — prefer official when released."
+    },
+    "spec-kit": {
+      "kind": "cli",
+      "install": "uvx --from git+https://github.com/github/spec-kit.git specify init --here",
+      "note": "Installs /speckit.* commands into the repo. Requires uv (Python)."
+    },
+    "openspec": {
+      "kind": "cli",
+      "install": "npx openspec@latest init",
+      "note": "Delta-based SDD, best for brownfield. Requires Node 20+."
+    }
+  },
+  "stack": {
+    "go":         { "plugins": ["gopls-lsp"] },
+    "java":       { "plugins": ["jdtls-lsp"] },
+    "kotlin":     { "plugins": ["kotlin-lsp"] },
+    "csharp":     { "plugins": ["csharp-lsp"] },
+    "dotnet":     { "plugins": ["csharp-lsp"] },
+    "php":        { "plugins": ["php-lsp"] },
+    "c":          { "plugins": ["clangd-lsp"] },
+    "cpp":        { "plugins": ["clangd-lsp"] },
+    "lua":        { "plugins": ["lua-lsp"] },
+    "typescript": { "plugins": [], "note": "no LSP plugin needed — native support" },
+    "python":     { "plugins": [], "note": "no LSP plugin in official marketplace as of 2026-07" },
+    "react":      { "plugins": ["frontend-design"] },
+    "angular":    { "plugins": ["frontend-design"] },
+    "vue":        { "plugins": ["frontend-design"] },
+    "nextjs":     { "plugins": ["frontend-design"] },
+    "laravel":    { "plugins": ["laravel-boost"] },
+    "expo":       { "plugins": ["expo"] },
+    "mongodb":    { "plugins": ["mongodb"] },
+    "postgres":   { "plugins": [], "note": "no generic postgres plugin — neon/alloydb/cloud-sql-postgresql are vendor-specific; recommend only if that vendor is in use" },
+    "mysql":      { "plugins": [], "note": "cloud-sql-mysql is GCP-only" },
+    "mssql":      { "plugins": [], "note": "cloud-sql-sqlserver is GCP-only" },
+    "clickhouse": { "plugins": ["clickhouse", "clickhouse-best-practices"] },
+    "redis":      { "plugins": [], "note": "no marketplace plugin — org skill candidate" },
+    "kafka":      { "plugins": [], "note": "no marketplace plugin — org skill candidate" }
+  },
+  "cloud": {
+    "aws":        { "plugins": ["deploy-on-aws", "aws-core"] },
+    "azure":      { "plugins": ["azure"] },
+    "gcp":        { "plugins": [], "note": "no umbrella GCP plugin — per-service (cloud-sql-*, bigquery, alloydb) chosen by stack" },
+    "vercel":     { "plugins": [], "note": "no official plugin as of 2026-07 — Vercel MCP via .mcp.json" },
+    "cloudflare": { "plugins": ["cloudflare"] }
+  },
+  "always": {
+    "plugins": ["code-review", "commit-commands", "context7"],
+    "note": "evaluation engine, traceability commits, version-accurate docs lookup"
+  },
+  "testing": {
+    "e2e": { "plugins": ["playwright"], "note": "pairs with the se-harness e2e planner/generator/healer agents" }
+  },
+  "observability": {
+    "choose_one": ["dash0", "langfuse-observability"],
+    "note": "OpenTelemetry for agent sessions/tool calls — the Observability engine. Ask the user which (or neither)."
+  },
+  "sources": {
+    "jira_or_confluence": { "plugins": ["atlassian"] },
+    "github":             { "plugins": ["github"] },
+    "gitlab":             { "plugins": ["gitlab"] },
+    "linear":             { "plugins": ["linear"] },
+    "figma_design_system": { "plugins": ["figma"], "note": "only when org has a Figma design system (B11)" }
+  },
+  "memory": {
+    "structural": {
+      "choose_one": ["CodeGraph (codegraph-ai/CodeGraph)", "codebase-memory-mcp (DeusData/codebase-memory-mcp)"],
+      "note": "A7 bake-off pending — both are MCP servers configured via .mcp.json, not marketplace plugins. codebase-memory-mcp has its own installer: curl -fsSL https://raw.githubusercontent.com/DeusData/codebase-memory-mcp/main/install.sh | bash"
+    }
+  }
+}

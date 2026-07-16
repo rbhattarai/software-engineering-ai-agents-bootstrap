@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:medium.com)",
+      "Read(//c/Users/bhatt/AppData/Local/Temp/claude/C--Users-bhatt-OneDrive-Documents-develop-software-eng-project-ai-bootstrap/ac8c2b71-d962-42bf-b2a8-17662a34c387/scratchpad/ECC/**)",
+      "Read(//c/Users/bhatt/AppData/Local/Temp/claude/C--Users-bhatt-OneDrive-Documents-develop-software-eng-project-ai-bootstrap/ac8c2b71-d962-42bf-b2a8-17662a34c387/scratchpad/ECC/skills/**)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Read(//c/Users/bhatt/AppData/Local/Temp/claude/C--Users-bhatt-OneDrive-Documents-develop-software-eng-project-ai-bootstrap/ac8c2b71-d962-42bf-b2a8-17662a34c387/scratchpad/agency-agents/**)",
+      "Read(//c/Users/bhatt/AppData/Local/Temp/claude/C--Users-bhatt-OneDrive-Documents-develop-software-eng-project-ai-bootstrap/ac8c2b71-d962-42bf-b2a8-17662a34c387/scratchpad/agency-agents/scripts/**)",
+      "WebFetch(domain:gist.github.com)",
+      "WebFetch(domain:claude.com)",
+      "WebFetch(domain:docs.github.com)",
+      "WebFetch(domain:wavemaker.ai)",
+      "Bash(rm -rf /c/Users/bhatt/AppData/Local/Temp/claude/C--Users-bhatt-OneDrive-Documents-develop-software-eng-project-ai-bootstrap/ac8c2b71-d962-42bf-b2a8-17662a34c387/scratchpad/splicetest)",
+      "Bash(mkdir -p /c/Users/bhatt/AppData/Local/Temp/claude/C--Users-bhatt-OneDrive-Documents-develop-software-eng-project-ai-bootstrap/ac8c2b71-d962-42bf-b2a8-17662a34c387/scratchpad/splicetest)",
+      "Read(//c/Users/bhatt/AppData/Local/Temp/claude/C--Users-bhatt-OneDrive-Documents-develop-software-eng-project-ai-bootstrap/ac8c2b71-d962-42bf-b2a8-17662a34c387/scratchpad/**)",
+      "Bash(chmod +x /c/Users/bhatt/OneDrive/Documents/develop/software-eng-project-ai-bootstrap/plugins/se-harness/scripts/render-block.sh)",
+      "Bash(printf '# Acme App\\\\nStack: react, node\\\\n')",
+      "Bash(python -c ' *)"
+    ]
+  }
+}

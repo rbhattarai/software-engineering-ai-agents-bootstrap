@@ -1,0 +1,13 @@
+{
+  "name": "software-engineering-ai-agents-bootstrap",
+  "owner": {
+    "name": "Rohan Bhattarai"
+  },
+  "plugins": [
+    {
+      "name": "se-harness",
+      "source": "./plugins/se-harness",
+      "description": "Bootstrap an AI-agentic SDLC harness around any project: interview/scan, recommend, generate, goal loop with HITL gates, sync. Tech-stack- and methodology-agnostic."
+    }
+  ]
+}

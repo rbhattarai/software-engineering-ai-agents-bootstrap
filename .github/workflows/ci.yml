@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      count: ${{ steps.tests.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run test suite
+        id: tests
+        run: |
+          TESTS_COUNT_FILE=/tmp/tests-count bash tests/run-tests.sh
+          echo "count=$(cat /tmp/tests-count)" >> "$GITHUB_OUTPUT"
+
+      - name: Generated Copilot plugin is fresh
+        run: |
+          bash plugins/se-harness/scripts/build-copilot-plugin.sh
+          git diff --exit-code -- plugins/se-harness-copilot .github/plugin
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate plugin manifests (strict)
+        run: |
+          claude plugin validate . --strict
+          claude plugin validate ./plugins/se-harness --strict
+
+  tests-badge:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Publish tests badge JSON to badges branch
+        run: |
+          mkdir badges && cd badges
+          printf '{"schemaVersion":1,"label":"tests","message":"%s passing","color":"brightgreen"}\n' \
+            "${{ needs.test.outputs.count }}" > tests.json
+          git init -b badges
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests.json
+          git commit -m "Update tests badge (${{ needs.test.outputs.count }} passing)"
+          git push --force \
+            "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
+            badges

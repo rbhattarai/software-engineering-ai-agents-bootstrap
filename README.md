@@ -2,6 +2,8 @@
 
 [![release](https://img.shields.io/github/v/release/rbhattarai/software-engineering-ai-agents-bootstrap?label=release&color=2ea44f)](https://github.com/rbhattarai/software-engineering-ai-agents-bootstrap/releases)
 [![license](https://img.shields.io/github/license/rbhattarai/software-engineering-ai-agents-bootstrap?label=license&color=97ca00)](./LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/rbhattarai/software-engineering-ai-agents-bootstrap/ci.yml?branch=main&label=CI)](https://github.com/rbhattarai/software-engineering-ai-agents-bootstrap/actions/workflows/ci.yml)
+[![tests](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Frbhattarai%2Fsoftware-engineering-ai-agents-bootstrap%2Fbadges%2Ftests.json)](https://github.com/rbhattarai/software-engineering-ai-agents-bootstrap/actions/workflows/ci.yml)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-se--harness-D97757?logo=claude&logoColor=white)](./docs/setup-guide-claude.md)
 [![Copilot CLI](https://img.shields.io/badge/Copilot_CLI-se--harness--copilot-8957e5?logo=githubcopilot&logoColor=white)](./docs/setup-guide-copilot.md)
 [![agents](https://img.shields.io/badge/SDLC_agents-11-6f42c1)](./plugins/se-harness/agents)

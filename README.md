@@ -1,5 +1,7 @@
 # se-harness
 
+![se-harness — bootstrap an AI-agentic SDLC around any project: 3 hook-enforced approval gates, 11 SDLC agents, Claude Code + Copilot CLI](./docs/assets/social-preview.png)
+
 **An AI-agentic SDLC harness you can bootstrap around any software project — new or
 existing, any stack, single-repo or multi-repo. AI agents do the work; hooks make sure
 they can't ship without you.**

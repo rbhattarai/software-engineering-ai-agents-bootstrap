@@ -125,7 +125,5 @@ The `shared_data` volume mounts `apps/data/` into both containers so they read a
 Run E2E tests from the framework root:
 
 ```bash
-./run_test.sh -apps=loan-app,lending-app -env=dev -tags=@LoanApproval
+npx playwright test e2e-loan-approval.spec.ts
 ```
-
-Test page object: `tests/apps/loan-app/pages/LoanAppPage.ts`

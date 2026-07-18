@@ -160,15 +160,17 @@ occasionally, `/harness-sync`.
 
 ## Part 3 — Example B: multi-repo product
 
-Scenario: **demo-loan-app**, a layered product split across seven repos (`frontend`
-Angular/TS · `backend-core` .NET MVC · `backend-integration` .NET · `common` .NET lib ·
-`ui` Node lib · `config` .prop files · `database-config` MSSQL). Same shape works for a
-domain-split (order/payment/inventory) product.
+Scenario: **acme-loan-platform**, a fictional layered product split across seven repos
+(`frontend` Angular/TS · `backend-core` .NET MVC · `backend-integration` .NET · `common`
+.NET lib · `ui` Node lib · `config` .prop files · `database-config` MSSQL). Same shape
+works for a domain-split (order/payment/inventory) product. For a real, clonable two-app
+demo, see [demo-loan-app](https://github.com/rbhattarai/demo-loan-app) and the
+[multi-unit walkthrough](./demo/README.md#part-2--multi-unit-walkthrough-the-loan-product).
 
 ### 3.1 Workspace layout: side-by-side clones
 
 ```bash
-mkdir demo-loan-app && cd demo-loan-app
+mkdir acme-loan-platform && cd acme-loan-platform
 git clone <url>/frontend.git
 git clone <url>/backend-core.git
 git clone <url>/backend-integration.git
@@ -182,9 +184,9 @@ The workspace manifest, contract-check, and cross-repo reading all assume siblin
 
 ### 3.2 The workspace manifest
 
-Create `demo-loan-app/workspace.yaml` from `templates/workspace.yaml` — topology, shared org
+Create `acme-loan-platform/workspace.yaml` from `templates/workspace.yaml` — topology, shared org
 context, and the **contracts registry** that powers deterministic cross-repo impact checks.
-The full demo-loan-app example (units, `shared.org` internal libraries, `jira_project`, and a
+The full acme-loan-platform example (units, `shared.org` internal libraries, `jira_project`, and a
 `contracts:` stanza with `provider`/`consumers`) is in the
 [Copilot guide, Part 3](./setup-guide-copilot.md) — the file is identical on both platforms.
 Two rules: keep the `contracts:` stanza shape exactly as templated (it's machine-read by

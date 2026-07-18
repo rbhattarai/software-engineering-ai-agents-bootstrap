@@ -36,7 +36,10 @@ restricted-org alternatives); Parts 2–8 walk a **multi-repo** product end-to-e
 **Part 9** is the short path for a **single-repo** project; Part 10 covers updating or
 extending the plugin; Part 11 covers publishing to the marketplaces.
 
-The multi-repo example uses a product called **demo-loan-app** with these repos:
+The multi-repo example uses a fictional product called **acme-loan-platform** with the
+repos below. (For a real, clonable two-app demo, see
+[demo-loan-app](https://github.com/rbhattarai/demo-loan-app) and the
+[multi-unit walkthrough](./demo/README.md#part-2--multi-unit-walkthrough-the-loan-product).)
 
 | Repo | Stack |
 |---|---|
@@ -145,7 +148,7 @@ If policy forces offline transfer, or `copilot plugin marketplace add` is blocke
 One folder per product, all repos cloned as siblings, the harness beside them:
 
 ```bash
-mkdir demo-loan-app && cd demo-loan-app
+mkdir acme-loan-platform && cd acme-loan-platform
 git clone <internal-git-url>/frontend.git
 git clone <internal-git-url>/backend-core.git
 git clone <internal-git-url>/backend-integration.git
@@ -163,13 +166,13 @@ assume sibling checkouts (`../workspace.yaml` lookup).
 
 ## Part 3 — The workspace manifest (`workspace.yaml`)
 
-Create `demo-loan-app/workspace.yaml` from `se-harness/templates/workspace.yaml`. This is the
+Create `acme-loan-platform/workspace.yaml` from `se-harness/templates/workspace.yaml`. This is the
 product-level file: topology, shared org context, and the **contract registry** that powers
-cross-repo impact checking. A demo-loan-app-shaped example:
+cross-repo impact checking. An acme-loan-platform-shaped example:
 
 ```yaml
 workspace:
-  name: demo-loan-app
+  name: acme-loan-platform
   topology: multi-repo
   layout: layered            # frontend / backend-core / backend-integration / config / db
 
@@ -209,8 +212,8 @@ Fill `contracts:` with whatever API/schema artifacts actually exist (OpenAPI spe
 Avro/JSON schemas). If none are written down yet, that's a finding in itself — start with the
 one or two interfaces that break most often.
 
-Commit `workspace.yaml` to a small internal meta-repo (e.g. `demo-loan-app-harness`) so teammates
-get it via clone; until then it can live uncommitted in the `demo-loan-app/` folder.
+Commit `workspace.yaml` to a small internal meta-repo (e.g. `acme-loan-platform-harness`) so teammates
+get it via clone; until then it can live uncommitted in the `acme-loan-platform/` folder.
 
 ---
 

@@ -19,7 +19,8 @@ they can't ship without you.**
 
 AI coding agents are good at writing code and bad at process discipline. se-harness wraps
 a full software-engineering lifecycle around them: it learns your project (scan +
-interview), staffs it with 11 specialized agents, and runs each goal through
+interview), builds a memory of your code and domain, staffs it with 11 specialized
+agents, and runs each goal through
 requirement → stories → implementation → tests → PR → deploy — pausing at **three
 human-approval gates that are enforced by hooks, not prompts**. The agent literally cannot
 open the PR, push, or deploy until *you* flip `status: approved`.

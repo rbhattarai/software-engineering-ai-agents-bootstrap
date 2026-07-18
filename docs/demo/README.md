@@ -4,10 +4,10 @@ Two demos live here:
 
 - **Part 1 — the README GIF**: a 45–60s single-project recording for the top of the root
   README.
-- **Part 2 — multi-unit walkthrough**: harness a two-app product (the bundled
-  [`apps/loan-webapp`](../../apps/loan-webapp) + [`apps/lending-webapp`](../../apps/lending-webapp)
-  sharing a JSON store) with a workspace manifest and contract checking. Use it live, or
-  record it as a second GIF.
+- **Part 2 — multi-unit walkthrough**: harness a two-app product — the companion
+  [**demo-loan-app**](https://github.com/rbhattarai/demo-loan-app) repo (`loan-webapp` +
+  `lending-webapp` sharing a JSON store) — with a workspace manifest and contract
+  checking. Use it live, or record it as a second GIF.
 
 ---
 
@@ -19,7 +19,8 @@ Once it exists, uncomment the image block near the top of the root `README.md`.
 ## Storyboard (what to show, in order)
 
 Rehearse once first. Record in a real project that has the plugin installed —
-`apps/loan-webapp` works well (reset its state between takes, see Part 2 § Demo hygiene).
+`loan-webapp` inside a clone of [demo-loan-app](https://github.com/rbhattarai/demo-loan-app)
+works well (reset its state between takes, see Part 2 § Demo hygiene).
 
 1. **Init (~15s):** run `/harness-init` in an existing repo. Let the scan-confirmation
    moment be visible — the harness *detecting* the stack and asking you to confirm is the
@@ -85,28 +86,31 @@ If it's too big: fewer fps (10–12), smaller terminal, shorter scenes — in th
 
 # Part 2 — Multi-unit walkthrough: the loan product
 
-The repo bundles a realistic two-app product under [`apps/`](../../apps):
+The companion repo [**demo-loan-app**](https://github.com/rbhattarai/demo-loan-app) is a
+realistic two-app product:
 
 | Unit | URL | Role |
 |---|---|---|
-| [`loan-webapp`](../../apps/loan-webapp) | `https://localhost:3000` | Borrower side — request a loan (`status: New`), dashboard |
-| [`lending-webapp`](../../apps/lending-webapp) | `https://localhost:3001` | Lender side — add lenders, assign approver (`New → Pending`), approve/reject |
+| [`loan-webapp`](https://github.com/rbhattarai/demo-loan-app/tree/main/loan-webapp) | `https://localhost:3000` | Borrower side — request a loan (`status: New`), dashboard |
+| [`lending-webapp`](https://github.com/rbhattarai/demo-loan-app/tree/main/lending-webapp) | `https://localhost:3001` | Lender side — add lenders, assign approver (`New → Pending`), approve/reject |
 
-They share `apps/data/*.json` (a compose volume) and sync in real time via a
-`POST /notify` webhook + SSE. That shared surface is exactly what the harness's contract
-registry is for — so the demo shows **init per unit + workspace-level contract checking**.
+They share `data/*.json` (a compose volume) and sync in real time via a `POST /notify`
+webhook + SSE. That shared surface is exactly what the harness's contract registry is
+for — so the demo shows **init per unit + workspace-level contract checking**.
 
-**How `apps/data/` is modeled:** it's a data store, not a code unit, so it is *not* a
-third unit in the manifest. Instead its record shapes and the webhook protocol are
-declared as **contracts** ([`apps/contracts/loan-record.md`](../../apps/contracts/loan-record.md),
-[`apps/contracts/notify-webhook.md`](../../apps/contracts/notify-webhook.md)) registered in
-[`apps/workspace.yaml`](../../apps/workspace.yaml) with providers and consumers. Change a
-contract → `contract-check.sh` names every consumer unit before you can push.
+**How `data/` is modeled:** it's a data store, not a code unit, so it is *not* a third
+unit in the manifest. Instead its record shapes and the webhook protocol are declared as
+**contracts** ([`contracts/loan-record.md`](https://github.com/rbhattarai/demo-loan-app/blob/main/contracts/loan-record.md),
+[`contracts/notify-webhook.md`](https://github.com/rbhattarai/demo-loan-app/blob/main/contracts/notify-webhook.md))
+registered in [`workspace.yaml`](https://github.com/rbhattarai/demo-loan-app/blob/main/workspace.yaml)
+with providers and consumers. Change a contract → `contract-check.sh` names every
+consumer unit before you can push.
 
 ## Step 0 — prerequisites
 
 ```bash
-cd apps
+git clone https://github.com/rbhattarai/demo-loan-app
+cd demo-loan-app
 docker compose up --build      # loan-webapp :3000, lending-webapp :3001
 ```
 
@@ -114,16 +118,16 @@ Everything below assumes the se-harness plugin is installed (root README § Inst
 
 ## Step 1 — the workspace manifest
 
-Already provided: [`apps/workspace.yaml`](../../apps/workspace.yaml) — two units
-(`path:` form, since they sit side by side in one repo), the shared block, `run.compose`
-pointing at `apps/docker-compose.yml` (used by the goal loop's compose-verify step), and
-the two contracts. For a true multi-repo product you'd use `repo:` per unit in a small
-meta-repo instead; everything else is identical.
+Already provided at the demo repo's root: `workspace.yaml` — two units (`path:` form,
+since they sit side by side in one repo), the shared block, `run.compose` pointing at
+`docker-compose.yml` (used by the goal loop's compose-verify step), and the two
+contracts. For a true multi-repo product you'd use `repo:` per unit in a small meta-repo
+instead; everything else is identical.
 
 ## Step 2 — init each unit
 
 ```bash
-cd apps/loan-webapp
+cd loan-webapp
 claude
 > /harness-init
 ```
@@ -135,39 +139,40 @@ only for what can't be detected — methodology, environments, org context. Resu
 unit: `AGENTS.md` + `CLAUDE.md` (generated blocks), `.harness/` (profile, memory seeds),
 gitignored `.env.harness`.
 
-Repeat in `apps/lending-webapp`. The manifest is auto-discovered (the hook looks for
-`../workspace.yaml` relative to the unit), linking both profiles to the workspace.
+Repeat in `lending-webapp`. The manifest is auto-discovered (the hook looks for
+`../workspace.yaml` relative to the unit — the demo repo's root), linking both profiles
+to the workspace.
 
 Optionally follow with `/harness-bootstrap` in each unit for recommended companion
 tooling (opt-in, recorded in the lockfile).
 
 ## Step 3 — see the contract gate fire
 
-Make a breaking change to the shared loan shape — e.g. edit
-`apps/contracts/loan-record.md` to add a required `rejectionReason` field — then:
+Make a breaking change to the shared loan shape — e.g. edit `contracts/loan-record.md`
+to add a required `rejectionReason` field. Inside a Claude session the PreToolUse hook
+then blocks `git push` / `gh pr create` automatically. To run the same check standalone,
+point at the script in your se-harness clone (or installed plugin) from the demo repo
+root:
 
 ```bash
-bash plugins/se-harness/scripts/contract-check.sh --
+bash /path/to/se-harness/plugins/se-harness/scripts/contract-check.sh --
 ```
 
 Exit 2, stderr names the blast radius:
 
 ```
-se-harness contract-check: contract 'loan-record' (apps/contracts/loan-record.md) changed.
+se-harness contract-check: contract 'loan-record' (contracts/loan-record.md) changed.
   provider:  loan-webapp
   consumers: lending-webapp
   → verify each consumer still matches, and link consumer tasks to this REQ.
 ```
-
-The same check runs automatically as a PreToolUse hook on `git push` / `gh pr create` —
-inside a Claude session the push is blocked, not just warned.
 
 ## Step 4 — a cross-unit goal, end to end
 
 The flagship demo goal (it genuinely spans both units + the contract):
 
 ```
-cd apps/lending-webapp
+cd lending-webapp
 claude
 > /harness-goal "When a lender rejects a loan, they must give a rejection reason,
   and the borrower must see it on the loan-webapp dashboard"
@@ -183,8 +188,8 @@ What to watch for:
    contract-check flags `loan-webapp` as an impacted consumer; the loop links a consumer
    task to the same REQ.
 3. **Implementation fan-out** in isolated worktrees, then unit/integration/e2e tests.
-4. ⛔ **Gate 2** — PR with evidence; compose-verify runs against
-   `apps/docker-compose.yml` (both apps up, SSE sync observable in two browser tabs).
+4. ⛔ **Gate 2** — PR with evidence; compose-verify runs against `docker-compose.yml`
+   (both apps up, SSE sync observable in two browser tabs).
 5. ⛔ **Gate 3** — deploy approval.
 
 Good smaller goals if you want a shorter take: "Add an amount-range filter to the lender
@@ -193,13 +198,13 @@ dashboard" (single unit), "Show a live-updated count of pending loans on both da
 
 ## Demo hygiene (repeatable takes)
 
-The running apps mutate `apps/data/*.json`, and the goal loop writes `.harness/` state.
-Between takes:
+The running apps mutate `data/*.json`, and the goal loop writes `.harness/` state.
+Between takes, from the demo repo root:
 
 ```bash
-git checkout -- apps/data                              # reset seed data
-git clean -fd apps/loan-webapp/.harness apps/lending-webapp/.harness  # if committed state isn't wanted
-docker compose -f apps/docker-compose.yml restart
+git checkout -- data                                        # reset seed data
+git clean -fd loan-webapp/.harness lending-webapp/.harness  # if committed state isn't wanted
+docker compose restart
 ```
 
 ## GIF storyboard for Part 2 (optional second GIF)
@@ -209,7 +214,7 @@ docker compose -f apps/docker-compose.yml restart
 1. Split screen: both dashboards in a browser, add a loan on :3000, watch it appear live
    on :3001 (~8s — establishes the product).
 2. `/harness-init` scan-confirm moment in `loan-webapp` (~15s).
-3. `cat apps/workspace.yaml` — units + contracts (~5s).
+3. `cat workspace.yaml` — units + contracts (~5s).
 4. Edit the contract file, `git push` inside the session → **contract-check block naming
    lending-webapp** (~12s). This is Part 2's money shot.
 5. `/harness-goal` grill → REQ gate block → approve (~20s).

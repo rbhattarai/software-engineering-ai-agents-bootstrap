@@ -14,8 +14,8 @@
     },
     "openspec": {
       "kind": "cli",
-      "install": "npx openspec@latest init",
-      "note": "Delta-based SDD, best for brownfield. Requires Node 20+."
+      "install": "npx @fission-ai/openspec@latest init",
+      "note": "Delta-based SDD, best for brownfield. Requires Node 20+. Package name is @fission-ai/openspec (github.com/Fission-AI/OpenSpec) — the unscoped 'openspec' npm package is an unrelated 0.0.0 placeholder, not this project."
     }
   },
   "stack": {
@@ -71,8 +71,12 @@
   },
   "memory": {
     "structural": {
-      "choose_one": ["CodeGraph (codegraph-ai/CodeGraph)", "codebase-memory-mcp (DeusData/codebase-memory-mcp)"],
-      "note": "A7 bake-off pending — both are MCP servers configured via .mcp.json, not marketplace plugins. codebase-memory-mcp has its own installer: curl -fsSL https://raw.githubusercontent.com/DeusData/codebase-memory-mcp/main/install.sh | bash"
+      "choose_one": [
+        "CodeGraph (codegraph-ai/CodeGraph)",
+        "CodeGraph (colbymchenry/codegraph)",
+        "codebase-memory-mcp (DeusData/codebase-memory-mcp)"
+      ],
+      "note": "A7 bake-off pending — all three are MCP servers configured via .mcp.json, not marketplace plugins. Two unrelated projects share the 'CodeGraph' name: codegraph-ai/CodeGraph (tree-sitter semantic graph, 42+ MCP tools, RocksDB persistent memory layer, VS Code extension) vs colbymchenry/codegraph (lightweight pre-indexed graph, CLI-installed, SQLite, native OS file-watcher auto-sync, no external services) — confirm which repo the user means before installing. colbymchenry/codegraph installs via: curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh (macOS/Linux) or npm i -g @colbymchenry/codegraph, then `codegraph install` + `codegraph init [path]`. codebase-memory-mcp has its own installer: curl -fsSL https://raw.githubusercontent.com/DeusData/codebase-memory-mcp/main/install.sh | bash"
     }
   }
 }
